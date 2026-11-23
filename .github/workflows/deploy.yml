@@ -28,6 +28,14 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
+      - name: Check Pages configuration
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          gh api "repos/$REPOSITORY/pages" \
+            --jq '{status, build_type, cname, html_url}'
+
       - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v5
