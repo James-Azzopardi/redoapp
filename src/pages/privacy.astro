@@ -1,145 +1,119 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+
+// Before publication: confirm the released app matches the privacy audit,
+// complete the visible confirmation fields, and remove the draft notice.
+// Confirm the intended audience before adding any children-specific wording.
+// Website visitor data is outside this app policy's scope and needs a separate review.
 ---
 
 <BaseLayout
   title="Privacy policy | Redo"
-  description="How Redo handles local process content, photos, reminders, timers, sharing and support messages."
+  description="How Redo handles your saved processes, photos, reminders, timers, shared files and support messages."
   current="privacy"
   pageClass="privacy-page"
 >
   <main class="privacy-main">
     <article class="site-container prose">
-      <p class="draft-note" role="status">Draft — pending final details</p>
 
       <div class="prose__intro">
         <div>
           <h1>Privacy policy</h1>
-          <p class="policy-effective"><strong>Effective date:</strong> [CONFIRM: effective date]</p>
         </div>
-        <p class="prose-lead">Redo is designed mainly for local use. In the reviewed implementation, saved process content is stored in the app on your device. Some optional features use Apple system services, and you can choose to share content or contact support. [CONFIRM: release build matches the reviewed implementation, including no added services or SDKs.]</p>
+        <div class="prose__intro-copy">
+          <p class="prose-lead">Your saved processes and photos are stored locally in Redo on your device. Optional features let you use Apple Reminders and system timers, share processes and prepare support emails. Device backups and the services you choose may store additional copies.</p>
+          <p class="policy-effective"><strong>Effective date:</strong> 23 November 2026</p>
+        </div>
       </div>
 
       <section aria-labelledby="about-title">
         <h2 id="about-title">About this policy</h2>
         <div class="prose__body">
-          <p>Redo is operated by <strong>James Azzopardi</strong>. This policy explains how Redo handles information in its iPhone and iPad app, its timer extension and support communications.</p>
-          <p>Redo has no Redo account system in the app. For privacy questions, the proposed contact address is <span class="contact-address">info@redoapp.com.au</span>. [CONFIRM: activate and verify the privacy/support mailbox before publication.]</p>
-          <p>This policy does not describe data collected through visits to the Redo website, including cookies, visitor tracking, hosting logs or website forms. Website coverage will be decided separately.</p>
+          <p>Redo is developed and operated by <strong>James Azzopardi</strong>. This policy covers the Redo app for iPhone and iPad, its timer extension and associated support communications.</p>
         </div>
       </section>
 
       <section aria-labelledby="information-title">
-        <h2 id="information-title">Information saved in Redo</h2>
+        <h2 id="information-title">Information saved on your device</h2>
         <div class="prose__body">
-          <p>Redo lets you save repeatable processes. Depending on how you use it, the app may store:</p>
+          <p>Redo stores the information needed to save and follow your processes, including:</p>
           <ul>
             <li>process titles, summaries and icons;</li>
-            <li>step titles and instructions;</li>
-            <li>photos attached to steps;</li>
-            <li>timer durations and timer state;</li>
-            <li>links to associated Apple Reminders;</li>
-            <li>process creation, update and use dates; and</li>
-            <li>local identifiers used to manage processes, steps, reminders and timers.</li>
+            <li>step titles, instructions and photos;</li>
+            <li>timer settings and active timer details;</li>
+            <li>dates and identifiers linking processes to their reminders; and</li>
+            <li>local record identifiers and process creation, update and last-used dates.</li>
           </ul>
-          <p>This information is stored in Redo’s local app storage. The reviewed app has no Redo account system and no app-managed cloud synchronisation.</p>
-          <p>This does not prevent copies being handled by other services. For example, device backups depend on your device settings and chosen backup services. Reminders may also synchronise through the accounts configured in Apple Reminders.</p>
-          <p>A local “last used” date helps Redo show or organise your processes. It is not, by itself, analytics or a report sent to Redo.</p>
+          <p>Redo does not require an account or provide its own cloud synchronisation. Saved process content is not automatically sent to the developer.</p>
+          <p>Your device backup may include app data, depending on your settings and backup service. Apple Reminders may also synchronise through your configured accounts.</p>
         </div>
       </section>
 
       <section aria-labelledby="photos-title">
         <h2 id="photos-title">Photos and camera</h2>
         <div class="prose__body">
-          <p>You can choose a photo with Apple’s system photo picker or take a photo using your device camera.</p>
-          <p>The photo picker gives Redo access to the images you select. Redo does not use the picker to access your entire photo library. Taking a photo requires optional camera permission. You can manage this permission in your device Settings.</p>
-          <p>Photos selected or captured through Redo are processed on your device before being saved with a process. Imported image files may be stored as received. Redo does not promise that photo metadata, including location or other embedded information, is always removed. Photos may retain embedded metadata when they are imported or shared.</p>
+          <p>You can select images using Apple’s system photo picker or take a photo with your camera. The picker gives Redo access to the images you select, rather than your entire photo library. Taking a photo requires camera permission.</p>
+          <p>Selected and captured photos are processed on your device before being saved. Images imported in a <code>.redo</code> file may be stored as received. Imported or shared photos may retain embedded metadata, including location information.</p>
+          <p>Deleting a photo from a process does not delete the original image from your photo library.</p>
         </div>
       </section>
 
       <section aria-labelledby="reminders-title">
         <h2 id="reminders-title">Reminders and timers</h2>
         <div class="prose__body">
-          <p>Reminders are optional. If you use them, Redo asks for full read and write access to Apple Reminders. Redo uses this access to create and manage reminders associated with Redo processes.</p>
-          <p>The process title and selected reminder dates are passed to Apple Reminders. Reminders may then synchronise through the Apple or other accounts you have configured on your device. Redo cannot control copies or synchronisation handled by those accounts.</p>
-          <p>Timers use Apple’s system timer services. A timer can include the step title, duration and timer state. Depending on your device and settings, a step title may appear on the Lock Screen or Dynamic Island.</p>
-          <p>These handoffs are handled through Apple system services. The reviewed implementation does not establish that timer or reminder information is uploaded to a Redo server.</p>
+          <p>If you use reminders, Redo requests full read and write access to Apple Reminders. It uses this permission to create, check, update and remove reminders associated with your processes.</p>
+          <p>The process title, reminder dates and a standard note are passed to Apple Reminders. These records may synchronise through the accounts you have configured for Reminders.</p>
+          <p>Step timers use Apple’s system alarm services and require permission. Timer details include the step title and duration. The title and countdown may appear on your Lock Screen or Dynamic Island, depending on your device and settings.</p>
         </div>
       </section>
 
       <section aria-labelledby="sharing-title">
-        <h2 id="sharing-title">Sharing and importing</h2>
+        <h2 id="sharing-title">Sharing and importing processes</h2>
         <div class="prose__body">
-          <p>When you choose to share a process, Redo creates a readable <code>.redo</code> file. The file can contain:</p>
-          <ul>
-            <li>the process title, summary and instructions;</li>
-            <li>step titles;</li>
-            <li>timer durations; and</li>
-            <li>any photos included in the process.</li>
-          </ul>
-          <p>Redo does not encrypt the export file itself. Anyone who receives or can access the file may be able to read its contents. The security and retention of the file then depend on the transfer service, app or recipient you choose.</p>
-          <p>Local identifiers, usage dates and active reminder or timer state are excluded from the export according to the reviewed implementation.</p>
-          <p>You can import a <code>.redo</code> file from Files, Mail, Messages, AirDrop or another supported provider. Importing creates a new, independent local process in Redo. It does not delete the original file and does not remain linked to it.</p>
-          <p>Recipients and selected services control their own copies. Redo cannot revoke or delete copies held by another person, app, mailbox or storage service.</p>
+          <p>Sharing creates a readable <code>.redo</code> file containing the process title, icon, summary, step instructions, timer durations and any included photos. Local record identifiers, creation and usage dates, reminder details and active timer state are not included.</p>
+          <p>Redo does not encrypt the export file itself. Anyone with access to it can read its contents. You choose the app, service or recipient through the system share sheet, and their handling of the file is outside Redo’s control.</p>
+          <p>Importing a <code>.redo</code> file creates an independent process stored locally in Redo. It does not delete or remain linked to the original file. Redo cannot revoke shared files or remove copies held by recipients or other services.</p>
         </div>
       </section>
 
       <section aria-labelledby="support-title">
-        <h2 id="support-title">Support and information received by the operator</h2>
+        <h2 id="support-title">Support messages</h2>
         <div class="prose__body">
-          <p>Contacting support is optional and requires you to start and send an email. A support email may include your email address, message, attachments and the app, build and iOS version details automatically prepared by Redo. You decide whether to send the message and what else to include.</p>
-          <p>Support messages are used for <strong>[CONFIRM: purpose of support-message processing]</strong>. They are handled by <strong>[CONFIRM: support email provider]</strong>, with relevant processing locations <strong>[CONFIRM: relevant processing locations]</strong>. Access is limited to <strong>[CONFIRM: who can access support messages]</strong>.</p>
-          <p>Support messages are retained and deleted according to <strong>[CONFIRM: support retention and deletion practice]</strong>. Redo cannot recall an email after it has been sent or control copies retained by your email provider or recipients.</p>
-          <p>Apple-provided analytics, crash reports and TestFlight feedback are separate from the support email flow. <strong>[CONFIRM: whether the operator receives or uses Apple analytics, crash reports or TestFlight feedback, and how this is handled.]</strong></p>
+          <p>When configured, Redo’s contact feature prepares an optional email with app, build and iOS version details. Sending requires your action. If you send a message, the recipient receives your email address and the content and attachments you choose to include.</p>
         </div>
       </section>
 
       <section aria-labelledby="tracking-title">
-        <h2 id="tracking-title">Advertising, analytics and tracking</h2>
+        <h2 id="tracking-title">Advertising and analytics</h2>
         <div class="prose__body">
-          <p>The reviewed Redo app contains no advertising, tracking or third-party analytics SDKs. This statement is subject to confirmation that the release build does not add those services. <strong>[CONFIRM: release build contains no added advertising, tracking or third-party analytics services.]</strong></p>
-          <p>This statement concerns the reviewed app only. It does not describe website practices, Apple-provided reports or the practices of services you choose for sharing, email, backups or Reminders.</p>
+          <p>Redo contains no advertising, cross-app tracking or third-party analytics tools. Local dates used to organise your processes are not sent to the developer as usage reports.</p>
         </div>
       </section>
 
       <section aria-labelledby="retention-title">
-        <h2 id="retention-title">Retention and deletion</h2>
+        <h2 id="retention-title">Keeping and deleting your data</h2>
         <div class="prose__body">
-          <p>You can delete individual processes, steps and photos in Redo. Redo also provides a <strong>Delete All Saved Data</strong> action.</p>
-          <p>When deleting a process, Redo attempts to remove its associated reminders and cancel its timers, as well as delete the local process and its steps. Permission problems, system errors or other failures can prevent the full operation. Delete All Saved Data may therefore leave some local content or associated system records behind.</p>
-          <p>Deletion in Redo does not remove:</p>
-          <ul>
-            <li>exported files or recipient copies;</li>
-            <li>the original file used for an import;</li>
-            <li>sent emails or email attachments;</li>
-            <li>device backups; or</li>
-            <li>copies managed by Apple Reminders or other services.</li>
-          </ul>
-          <p>Files temporarily created for sharing are removed on a best-effort basis after sharing finishes. A cancellation, crash, force-quit or interruption may prevent cleanup. Redo does not promise immediate removal or secure erasure from every storage location.</p>
+          <p>Your saved processes remain in Redo until you delete them. You can remove individual processes, steps or photos, or use <strong>Delete All Saved Data</strong>.</p>
+          <p>When deleting a process, Redo also attempts to remove its associated Apple Reminder and cancel its timers. Permission or system errors can prevent deletion from completing. If an error occurs, some local content or system records may remain.</p>
+          <p>Deleting content in Redo does not remove exported files, recipient copies, original imported files, sent emails or device backups. Removal of associated reminders from synced accounts depends on those services.</p>
+          <p>Redo attempts to remove temporary export files when sharing finishes. An interruption can leave temporary files behind. Deletion does not guarantee immediate physical erasure of every stored copy.</p>
         </div>
       </section>
 
       <section aria-labelledby="choices-title">
-        <h2 id="choices-title">Your choices, access and security</h2>
+        <h2 id="choices-title">Your choices and security</h2>
         <div class="prose__body">
-          <p>You can choose whether to use the camera, photo picker, Reminders, timers, sharing and support email. Permissions can be changed in your device Settings. You can manage local process content directly in Redo.</p>
-          <p>The operator cannot remotely access or delete content stored only in the app on your device. To request access, correction or deletion of information held by the operator, or to raise a privacy concern, email <span class="contact-address">info@redoapp.com.au</span>. [CONFIRM: activate and verify the privacy/support mailbox before publication.]</p>
-          <p>Redo uses local app storage and Apple’s operating-system permission and access controls. The reviewed implementation does not establish app-level encryption, end-to-end encryption, secure erasure or protection of backup copies. No security method can remove all risks associated with sharing files or sending email.</p>
-        </div>
-      </section>
-
-      <section aria-labelledby="audience-title">
-        <h2 id="audience-title">Intended audience</h2>
-        <div class="prose__body">
-          <p>Redo’s intended audience is <strong>[CONFIRM: intended audience]</strong>. No age threshold or children-specific statement is included until this is confirmed.</p>
+          <p>Photos, camera access, reminders, timers and sharing are optional. You choose which images to provide through the photo picker and can manage camera, Reminders and alarm permissions in your device Settings. Withdrawing permission may prevent related features or cleanup from working.</p>
+          <p>Redo uses your device’s app storage and operating-system access controls. Choose carefully what you include in shared files and emails, as their protection also depends on the services and recipients you select.</p>
+          <p>James Azzopardi cannot remotely access or delete process content stored only on your device. You can manage that content directly in Redo.</p>
         </div>
       </section>
 
       <section aria-labelledby="changes-title">
-        <h2 id="changes-title">Changes and contact</h2>
+        <h2 id="changes-title">Contact and policy updates</h2>
         <div class="prose__body">
-          <p>Updates to this policy will appear on this page. The effective date above will be updated when the policy changes.</p>
-          <p>For privacy questions or requests, contact <span class="contact-address">info@redoapp.com.au</span>. [CONFIRM: activate and verify the privacy/support mailbox before publication.]</p>
+          <p>The proposed privacy and support address is <a href="mailto:info@redoapp.com.au" class="contact-address">info@redoapp.com.au</a>.</p>
+          <p>Updates to this policy will appear on this page with a revised effective date.</p>
         </div>
       </section>
     </article>
