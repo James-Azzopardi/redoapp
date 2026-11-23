@@ -1,0 +1,108 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BenefitRail from '../components/BenefitRail.astro';
+import Walkthrough from '../components/Walkthrough.astro';
+import { mockups } from '../data/screenshots';
+
+const createStages = [
+  {
+    title: 'Save how it’s done.',
+    body: 'Turn the things you do now and then into a guide you can use again, with steps, photos and timers.',
+  },
+  {
+    title: 'Keep the little details.',
+    body: 'The setting that worked. The part that fits. The things you’ll be glad you wrote down.',
+  },
+    {
+    title: 'Let your device keep track.',
+    body: 'Add a timer to any step and get notified when time’s up, even with the app closed.',
+  },
+];
+
+const followStages = [
+  {
+    title: 'Remember the details.',
+    body: 'Open your saved process and find the details you’ve forgotten, even months later.',
+  },
+  {
+    title: 'Take it one step at a time.',
+    body: 'Follow your instructions, check the photos and start a timer when you need one.',
+  },
+  {
+    title: 'Make next time easier.',
+    body: 'Set a reminder for next time, share your guide with someone else, or send it to another device.',
+  },
+];
+---
+
+<BaseLayout
+  title="Redo — Make next time easier."
+  description="Save the steps, photos and timers for things you do every so often. Next time, just follow along."
+  current="home"
+  pageClass="home-page"
+>
+  <main>
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="site-container hero__grid">
+        <div class="hero__copy">
+          <h1 id="hero-title">Make next time <span class="hero-highlight">easier.</span></h1>
+          <p class="hero__description">Break down something you do every so often into steps with photos and timers and follow along next time.</p>
+          <div class="hero__actions">
+            <a class="button-primary" href="#features">See how it works</a>
+            <p class="hero__support">Made for iPhone and iPad</p>
+          </div>
+        </div>
+
+        <div class="hero__visual" aria-label="Redo on iPad and iPhone">
+          <div class="hero-device hero-tablet" data-kind="product">
+            <img
+              src={mockups.heroTablet.src}
+              alt={mockups.heroTablet.alt}
+              width={mockups.heroTablet.width}
+              height={mockups.heroTablet.height}
+              loading="eager"
+              fetchpriority="high"
+              decoding="async"
+            />
+          </div>
+          <div class="hero-device hero-iphone" data-kind="product">
+            <img
+              src={mockups.heroIphone.src}
+              alt={mockups.heroIphone.alt}
+              width={mockups.heroIphone.width}
+              height={mockups.heroIphone.height}
+              loading="eager"
+              fetchpriority="high"
+              decoding="async"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="site-container">
+        <BenefitRail />
+      </div>
+    </section>
+
+    <Walkthrough
+      id="features"
+      title="Create it once."
+      intro="Capture the details of a task so you can follow the same process next time."
+      stages={createStages}
+      video="/assets/walkthrough/create-process.mp4"
+      poster="/assets/walkthrough/create-process-poster.jpg"
+      videoLabel="Redo walkthrough showing how to create and save a process"
+    />
+    <Walkthrough
+      id="step-process"
+      title="For the things you do again."
+      intro="Open a saved process and work through it step by step whenever the task comes back around."
+      stages={followStages}
+      video="/assets/walkthrough/follow-process.mp4"
+      poster="/assets/walkthrough/follow-process-poster.jpg"
+      videoLabel="Redo walkthrough showing how to follow a saved process"
+      reverse
+      alternate
+    />
+  </main>
+</BaseLayout>

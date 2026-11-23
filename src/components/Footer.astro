@@ -1,0 +1,25 @@
+---
+import { ArrowUp, Heart } from '@lucide/astro';
+
+interface Props {
+  current?: 'home' | 'privacy';
+}
+
+---
+
+<footer class="site-footer">
+  <div class="site-container site-footer__inner">
+    <a class="brand" href="/" aria-label="redo home">
+      <img src="/assets/brand/redo-mark.png" alt="" width="36" height="36" />
+      <span>redo</span>
+    </a>
+    <p class="site-footer__tagline">Made with <Heart size={18} /></p>
+    <div class="site-footer__links">    
+      <a class="site-footer__back-to-top" href="#top">
+        <ArrowUp size={16} stroke-width={2} aria-hidden="true" />
+        <span>Back to top</span>
+      </a>
+      <a href="/privacy">Privacy</a>
+    </div>
+  </div>
+</footer>

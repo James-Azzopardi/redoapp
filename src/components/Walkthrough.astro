@@ -1,0 +1,268 @@
+---
+interface Stage {
+  title: string;
+  body: string;
+}
+
+interface Props {
+  id: string;
+  title: string;
+  intro: string;
+  stages: Stage[];
+  video: string;
+  poster: string;
+  videoLabel: string;
+  reverse?: boolean;
+  alternate?: boolean;
+}
+
+const {
+  id,
+  title,
+  intro,
+  stages,
+  video,
+  poster,
+  videoLabel,
+  reverse = false,
+  alternate = false,
+} = Astro.props;
+
+const media = {
+  frame: '/assets/walkthrough/iphone-frame.webp',
+  width: 1206,
+  height: 2622,
+} as const;
+---
+
+<section
+  class:list={[
+    'walkthrough',
+    {
+      'walkthrough--reverse': reverse,
+      'walkthrough--alternate': alternate,
+    },
+  ]}
+  id={id}
+  aria-labelledby={`${id}-title`}
+  data-walkthrough
+  style={`--walkthrough-stage-count: ${stages.length}`}
+>
+  <div class="site-container walkthrough__intro">
+    <h2 id={`${id}-title`}>{title}</h2>
+    <p>{intro}</p>
+  </div>
+
+  <div class="walkthrough__track">
+    <div class="walkthrough__sticky">
+      <div class="site-container walkthrough__layout">
+        <div class="walkthrough__text">
+          <div class="walkthrough__stage-list" aria-live="polite">
+            {
+              stages.map((stage, index) => (
+                <article class="walkthrough__stage-panel" data-stage-panel={index}>
+                  <h3>{stage.title}</h3>
+                  <p>{stage.body}</p>
+                </article>
+              ))
+            }
+          </div>
+        </div>
+
+        <figure class="walkthrough__media">
+          <div class="walkthrough__device">
+            <div class="walkthrough__screen">
+              <img
+                class="walkthrough__poster"
+                src={poster}
+                alt=""
+                width={media.width}
+                height={media.height}
+                aria-hidden="true"
+              />
+              <video
+                class="walkthrough__video"
+                src={video}
+                poster={poster}
+                width={media.width}
+                height={media.height}
+                muted
+                playsinline
+                loop
+                preload="metadata"
+                tabindex="-1"
+                aria-label={videoLabel}
+              ></video>
+            </div>
+            <img
+              class="walkthrough__frame"
+              src={media.frame}
+              alt=""
+              width="949"
+              height="1955"
+              aria-hidden="true"
+            />
+          </div>
+          <figcaption class="visually-hidden">
+            {videoLabel}, shown inside an iPhone frame.
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <div class="walkthrough__sentinels" aria-hidden="true">
+      {stages.map((_, index) => <span data-stage-sentinel={index}></span>)}
+    </div>
+  </div>
+</section>
+
+<script>
+  (() => {
+    const roots = [...document.querySelectorAll<HTMLElement>('[data-walkthrough]')];
+    if (!roots.length) return;
+
+    const initializeWalkthrough = (root: HTMLElement) => {
+      const track = root.querySelector<HTMLElement>('.walkthrough__track');
+      const panels = [...root.querySelectorAll<HTMLElement>('[data-stage-panel]')];
+      const video = root.querySelector<HTMLVideoElement>('.walkthrough__video');
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+      const compactLayout = window.matchMedia('(max-width: 60rem)');
+      let activeStage = 0;
+      let frameRequest = 0;
+      let sectionVisible = false;
+      let wasPlayingBeforeHidden = false;
+
+      if (!track || !panels.length || !video) return;
+
+      root.dataset.enhanced = 'true';
+
+      const isNonSticky = () => reducedMotion.matches || compactLayout.matches;
+
+      const setVideoState = (state: string) => {
+        root.dataset.videoState = state;
+      };
+
+      const syncStageAccess = () => {
+        const showAll = isNonSticky();
+        panels.forEach((panel, index) => {
+          const isActive = index === activeStage;
+          panel.classList.toggle('is-active', isActive);
+          if (showAll) {
+            panel.removeAttribute('aria-hidden');
+          } else {
+            panel.setAttribute('aria-hidden', String(!isActive));
+          }
+        });
+      };
+
+      const setStage = (nextStage: number) => {
+        const next = Math.max(0, Math.min(panels.length - 1, nextStage));
+        if (next === activeStage && root.dataset.activeStage) return;
+        activeStage = next;
+        root.dataset.activeStage = String(activeStage);
+        syncStageAccess();
+      };
+
+      const updateStage = () => {
+        frameRequest = 0;
+        if (isNonSticky() || !sectionVisible) return;
+
+        const trackRect = track.getBoundingClientRect();
+        const viewportPoint = window.innerHeight * 0.5;
+        const segmentHeight = trackRect.height / panels.length;
+        const position = Math.max(0, Math.min(trackRect.height - 1, viewportPoint - trackRect.top));
+        setStage(Math.floor(position / segmentHeight));
+      };
+
+      const scheduleStageUpdate = () => {
+        if (frameRequest) return;
+        frameRequest = window.requestAnimationFrame(updateStage);
+      };
+
+      const playVideo = () => {
+        const result = video.play();
+        if (result && typeof result.catch === 'function') {
+          result.catch(() => setVideoState('blocked'));
+        }
+      };
+
+      const pauseVideo = () => {
+        video.pause();
+        if (root.dataset.videoState === 'playing') setVideoState('paused');
+      };
+
+      const mediaObserver = new IntersectionObserver(
+        ([entry]) => {
+          sectionVisible = entry.isIntersecting;
+          if (!sectionVisible) {
+            pauseVideo();
+          } else if (!reducedMotion.matches && video.paused) {
+            playVideo();
+          }
+          scheduleStageUpdate();
+        },
+        { threshold: 0.1 },
+      );
+
+      const onVideoPlaying = () => setVideoState('playing');
+      const onVideoPause = () => {
+        if (root.dataset.videoState === 'playing') setVideoState('paused');
+      };
+      const onVideoError = () => setVideoState('error');
+      const onCanPlay = () => {
+        if (sectionVisible && !reducedMotion.matches && video.paused) playVideo();
+      };
+      const onVisibilityChange = () => {
+        if (document.hidden) {
+          wasPlayingBeforeHidden = !video.paused;
+          pauseVideo();
+        } else if (wasPlayingBeforeHidden && sectionVisible) {
+          playVideo();
+        }
+      };
+      const onMotionChange = () => {
+        syncStageAccess();
+        if (reducedMotion.matches) {
+          pauseVideo();
+          setVideoState('poster');
+        } else if (sectionVisible && video.paused) {
+          playVideo();
+        }
+        scheduleStageUpdate();
+      };
+      const onLayoutChange = () => {
+        syncStageAccess();
+        scheduleStageUpdate();
+      };
+      const cleanup = () => {
+        mediaObserver.disconnect();
+        window.removeEventListener('scroll', scheduleStageUpdate);
+        window.removeEventListener('resize', onLayoutChange);
+        document.removeEventListener('visibilitychange', onVisibilityChange);
+        reducedMotion.removeEventListener('change', onMotionChange);
+        compactLayout.removeEventListener('change', onLayoutChange);
+        video.removeEventListener('playing', onVideoPlaying);
+        video.removeEventListener('pause', onVideoPause);
+        video.removeEventListener('error', onVideoError);
+        video.removeEventListener('canplay', onCanPlay);
+      };
+
+      setStage(0);
+      syncStageAccess();
+      setVideoState('poster');
+      mediaObserver.observe(root);
+      window.addEventListener('scroll', scheduleStageUpdate, { passive: true });
+      window.addEventListener('resize', onLayoutChange);
+      document.addEventListener('visibilitychange', onVisibilityChange);
+      reducedMotion.addEventListener('change', onMotionChange);
+      compactLayout.addEventListener('change', onLayoutChange);
+      video.addEventListener('playing', onVideoPlaying);
+      video.addEventListener('pause', onVideoPause);
+      video.addEventListener('error', onVideoError);
+      video.addEventListener('canplay', onCanPlay);
+      window.addEventListener('astro:before-swap', cleanup, { once: true });
+    };
+
+    roots.forEach(initializeWalkthrough);
+  })();
+</script>

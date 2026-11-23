@@ -1,0 +1,37 @@
+---
+interface Props {
+  src?: string;
+  alt: string;
+  width: number;
+  height: number;
+  priority?: boolean;
+  slotName: string;
+  reveal?: 'feature-visual';
+  frameClass?: string;
+}
+
+const { src, alt, width, height, priority = false, slotName, reveal, frameClass } = Astro.props;
+---
+
+<figure
+  class:list={['screenshot-frame w-full', frameClass]}
+  data-slot={slotName}
+  data-alt={alt}
+  data-reveal={reveal}
+  style={`--frame-ratio: ${width} / ${height}`}
+>
+  {src ? (
+    <img
+      src={src}
+      alt={alt}
+      width={width}
+      height={height}
+      loading={priority ? 'eager' : 'lazy'}
+      fetchpriority={priority ? 'high' : 'auto'}
+      decoding="async"
+      style={`aspect-ratio: ${width} / ${height}`}
+    />
+  ) : (
+    <div class="screenshot-placeholder" role="img" aria-label={alt}></div>
+  )}
+</figure>

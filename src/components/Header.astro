@@ -1,0 +1,26 @@
+---
+interface Props {
+  current?: 'home' | 'privacy';
+}
+
+const { current } = Astro.props;
+---
+
+<header class="site-header">
+  <div class="site-container site-header__inner">
+    <a class="brand" href="/" aria-label="redo home">
+      <img src="/assets/brand/redo-mark.png" alt="" width="36" height="36" />
+      <span>redo</span>
+    </a>
+
+    <nav class="site-nav" aria-label="Primary navigation">
+      <a href="/#features">Features</a>
+      <a
+        href="/privacy"
+        aria-current={current === 'privacy' ? 'page' : undefined}
+      >
+        Privacy
+      </a>
+    </nav>
+  </div>
+</header>

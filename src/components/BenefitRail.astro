@@ -1,0 +1,31 @@
+---
+import { CalendarClock, Layers, ListOrdered } from '@lucide/astro';
+---
+
+<section class="benefit-rail" aria-labelledby="benefit-rail-title">
+  <div class="benefit-list">
+    <article class="benefit-item">
+      <Layers size={42} aria-hidden="true" />
+      <div>
+        <h3>Save it once</h3>
+        <p>Keep the steps, photos and details you’ll need next time.</p>
+      </div>
+    </article>
+
+    <article class="benefit-item">
+      <ListOrdered size={42}  aria-hidden="true" />
+      <div>
+        <h3>Follow it again</h3>
+        <p>Pick up any process and work through it step by step.</p>
+      </div>
+    </article>
+
+    <article class="benefit-item">
+      <CalendarClock size={42}  aria-hidden="true" />
+      <div>
+        <h3>Know when it’s time</h3>
+        <p>Set a reminder for the things you only do now and then.</p>
+      </div>
+    </article>
+  </div>
+</section>

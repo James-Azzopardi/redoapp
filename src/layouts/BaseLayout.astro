@@ -1,0 +1,118 @@
+---
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+  current?: 'home' | 'privacy';
+  pageClass?: string;
+}
+
+const { title, description, current, pageClass = '' } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" href="/favicon/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon/favicon.ico" sizes="any" />
+    <link rel="icon" href="/favicon/favicon-96x96.png" type="image/png" sizes="96x96" />
+    <link rel="apple-touch-icon" href="/favicon/apple-touch-icon.png" sizes="180x180" />
+    <link rel="manifest" href="/favicon/site.webmanifest" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Schibsted+Grotesk:wght@700&display=swap"
+      rel="stylesheet"
+    />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <style is:global>
+      html,
+      body {
+        overflow-x: clip;
+      }
+    </style>
+    <script is:inline>
+      (() => {
+        const navigation = performance.getEntriesByType('navigation')[0];
+        const skip = () => delete document.documentElement.dataset.heroEntrance;
+
+        if (navigation?.type !== 'navigate' || location.hash || window.scrollY >= 8 || performance.now() >= 250) return;
+
+        window.addEventListener('hashchange', skip, { once: true });
+        requestAnimationFrame(() => {
+          if (!location.hash && window.scrollY < 8 && performance.now() < 250) {
+            document.documentElement.dataset.heroEntrance = 'enabled';
+          }
+        });
+      })();
+    </script>
+  </head>
+  <body id="top" class={pageClass}>
+    <Header current={current} />
+    <slot />
+    <Footer current={current} />
+    <script is:inline>
+      (() => {
+        const groups = [...document.querySelectorAll('[data-reveal-group]')];
+        if (!groups.length || !('IntersectionObserver' in window)) return;
+
+        const show = (group) => {
+          group.querySelectorAll('[data-reveal]').forEach((element) => {
+            element.dataset.revealState = 'visible';
+          });
+        };
+
+        try {
+          const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+              if (!entry.isIntersecting) return;
+              show(entry.target);
+              observer.unobserve(entry.target);
+            });
+          }, { rootMargin: '0px 0px -12% 0px', threshold: 0.08 });
+
+          document.documentElement.classList.add('js');
+          groups.forEach((group) => {
+            const box = group.getBoundingClientRect();
+            if (box.top < window.innerHeight && box.bottom > 0) {
+              show(group);
+            } else {
+              group.querySelectorAll('[data-reveal]').forEach((element) => {
+                element.dataset.revealState = 'pending';
+              });
+              observer.observe(group);
+            }
+          });
+        } catch {
+          document.documentElement.classList.remove('js');
+          groups.forEach(show);
+        }
+      })();
+    </script>
+    <script is:inline>
+      window.hallmarkSlots = (mapping) => {
+        for (const [name, value] of Object.entries(mapping)) {
+          const slot = document.querySelector(`[data-slot="${name}"]`);
+          if (!slot) continue;
+          const image = new Image();
+          image.src = typeof value === 'string' ? value : value.src;
+          image.alt = (typeof value === 'object' && value.alt) || slot.dataset.alt || '';
+          slot.querySelectorAll(':scope > img').forEach((existing) => existing.remove());
+          slot.prepend(image);
+        }
+      };
+
+      document.querySelectorAll('[data-slot] img').forEach((image) => {
+        if (image.complete && !image.naturalWidth) image.remove();
+        else image.addEventListener('error', () => image.remove(), { once: true });
+      });
+    </script>
+  </body>
+</html>
