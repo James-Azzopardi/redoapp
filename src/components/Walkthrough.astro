@@ -57,6 +57,21 @@ const media = {
     <div class="walkthrough__sticky">
       <div class="site-container walkthrough__layout">
         <div class="walkthrough__text">
+          {
+            !reverse && (
+              <div class="walkthrough__pagination" aria-hidden="true">
+                {stages.map((_, index) => (
+                  <span
+                    class:list={[
+                      'walkthrough__pagination-dot',
+                      { 'is-active': index === 0 },
+                    ]}
+                    data-stage-dot={index}
+                  ></span>
+                ))}
+              </div>
+            )
+          }
           <div class="walkthrough__stage-list" aria-live="polite">
             {
               stages.map((stage, index) => (
@@ -67,6 +82,21 @@ const media = {
               ))
             }
           </div>
+          {
+            reverse && (
+              <div class="walkthrough__pagination" aria-hidden="true">
+                {stages.map((_, index) => (
+                  <span
+                    class:list={[
+                      'walkthrough__pagination-dot',
+                      { 'is-active': index === 0 },
+                    ]}
+                    data-stage-dot={index}
+                  ></span>
+                ))}
+              </div>
+            )
+          }
         </div>
 
         <figure class="walkthrough__media">
@@ -124,6 +154,7 @@ const media = {
     const initializeWalkthrough = (root: HTMLElement) => {
       const track = root.querySelector<HTMLElement>('.walkthrough__track');
       const panels = [...root.querySelectorAll<HTMLElement>('[data-stage-panel]')];
+      const dots = [...root.querySelectorAll<HTMLElement>('[data-stage-dot]')];
       const video = root.querySelector<HTMLVideoElement>('.walkthrough__video');
       const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
       const compactLayout = window.matchMedia('(max-width: 60rem)');
@@ -152,6 +183,9 @@ const media = {
           } else {
             panel.setAttribute('aria-hidden', String(!isActive));
           }
+        });
+        dots.forEach((dot, index) => {
+          dot.classList.toggle('is-active', index === activeStage);
         });
       };
 

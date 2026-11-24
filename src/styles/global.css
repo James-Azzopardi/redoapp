@@ -398,11 +398,50 @@ body {
 }
 
 .walkthrough__text {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
   min-width: 0;
+}
+
+.walkthrough__pagination {
+  position: absolute;
+  top: 50%;
+  left: calc(var(--space-xl) * -1);
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xs);
+  margin: 0;
+  transform: translateY(-50%);
+}
+
+.walkthrough--reverse .walkthrough__pagination {
+  right: calc(var(--space-lg) * -1);
+  left: auto;
+}
+
+.walkthrough__pagination-dot {
+  display: block;
+  width: 7px;
+  height: 7px;
+  border-radius: var(--radius-pill);
+  background: color-mix(in oklab, var(--color-text-primary) 28%, transparent);
+  transition:
+    background-color var(--dur-short) var(--ease-out),
+    transform var(--dur-short) var(--ease-out);
+}
+
+.walkthrough__pagination-dot.is-active {
+  background: var(--color-accent);
+  transform: scale(1.35);
 }
 
 .walkthrough__stage-list {
   position: relative;
+  width: 100%;
   min-height: 20rem;
 }
 
@@ -803,6 +842,10 @@ body {
     display: contents;
   }
 
+  .walkthrough__pagination {
+    display: none;
+  }
+
   .walkthrough__media {
     order: 1;
   }
@@ -879,8 +922,8 @@ body {
 
   .hero-tablet {
     top: 8%;
-    left: -8%;
-    width: 112%;
+    left: 0;
+    width: 100%;
   }
 
   .hero-iphone {
@@ -996,6 +1039,10 @@ body {
   }
 
   .walkthrough__sentinels {
+    display: none;
+  }
+
+  .walkthrough__pagination {
     display: none;
   }
 
