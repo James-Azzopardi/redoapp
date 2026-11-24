@@ -1,0 +1,24 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Page not found | Redo"
+  description="The page you’re looking for could not be found."
+  pageClass="privacy-page"
+  noindex
+>
+  <main class="privacy-main">
+    <article class="site-container prose">
+      <div class="prose__intro">
+        <div>
+          <h1>Page not found</h1>
+        </div>
+        <div class="prose__intro-copy">
+          <p class="prose-lead">That page doesn’t exist or may have moved.</p>
+          <p><a href="/">Back to Redo home</a></p>
+        </div>
+      </div>
+    </article>
+  </main>
+</BaseLayout>

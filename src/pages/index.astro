@@ -4,6 +4,18 @@ import BenefitRail from '../components/BenefitRail.astro';
 import Walkthrough from '../components/Walkthrough.astro';
 import { mockups } from '../data/screenshots';
 
+const title = 'Redo — Save repeatable processes on iPhone and iPad';
+const description = 'Save repeatable processes with steps, photos, timers and reminders on iPhone and iPad. Redo helps you remember how to do things that come around again.';
+const heroDescription = 'Redo helps you save instructions for things you do every so often, with steps, photos, timers and reminders. Next time, just follow along.';
+const websiteJsonLd = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  '@id': 'https://redoapp.com.au/#website',
+  url: 'https://redoapp.com.au/',
+  name: 'Redo',
+  description: heroDescription,
+}).replace(/</g, '\\u003c').replace(/>/g, '\\u003e').replace(/&/g, '\\u0026');
+
 const createStages = [
   {
     title: 'Save how it’s done.',
@@ -36,17 +48,18 @@ const followStages = [
 ---
 
 <BaseLayout
-  title="Redo — Make next time easier."
-  description="Save the steps, photos and timers for things you do every so often. Next time, just follow along."
+  title={title}
+  description={description}
   current="home"
   pageClass="home-page"
 >
+  <script type="application/ld+json" set:html={websiteJsonLd}></script>
   <main>
     <section class="hero" aria-labelledby="hero-title">
       <div class="site-container hero__grid">
         <div class="hero__copy">
           <h1 id="hero-title">Make next time <span class="hero-highlight">easier.</span></h1>
-          <p class="hero__description">Break down something you do every so often into steps with photos and timers and follow along next time.</p>
+          <p class="hero__description">{heroDescription}</p>
           <div class="hero__actions">
             <a class="button-primary" href="#features">See how it works</a>
             <p class="hero__support">Made for iPhone and iPad</p>

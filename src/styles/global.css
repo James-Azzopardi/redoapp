@@ -440,7 +440,7 @@ body {
 .walkthrough__stage-panel p {
   max-width: 36ch;
   margin-top: var(--space-xl);
-  color: var(--color-muted-soft);
+  color: var(--color-ink-muted);
   font-size: clamp(1.05rem, 1.25vw, 1.35rem);
   line-height: 1.5;
 }
@@ -777,7 +777,7 @@ body {
 
   .walkthrough__intro p {
     max-width: 38ch;
-    color: var(--color-muted-soft);
+    color: var(--color-ink-muted);
     font-size: var(--text-lead);
   }
 
